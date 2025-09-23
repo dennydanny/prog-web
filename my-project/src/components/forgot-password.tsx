@@ -50,13 +50,10 @@ export default function Cadastro() {
         </CardAction>
         <CardHeader>
           <CardTitle>Esqueceu sua senha?</CardTitle>
-          <CardDescription>
-            Insira sua nova senha
-          </CardDescription>
+          <CardDescription>Insira sua nova senha</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-
             <div className="grid gap-2 relative">
               <Label htmlFor="password">Nova senha</Label>
               <Input
