@@ -13,15 +13,31 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { PasswordInput } from "./password-input";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
-export function Login() {
+interface LoginProps {
+  onSwitchToRegister: () => void;
+  onSwitchToForgotPassword: () => void;
+}
+
+export function Login({ onSwitchToRegister, onSwitchToForgotPassword }: LoginProps) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Email: ${email}\nSenha: ${password}`);
+
+    
+    if (!email || !password) {
+      alert("Preencha email e senha!");
+      return;
+    }
+
+   
+    router.push("/principal");
   };
+
 
   return (
     <div className="flex justify-center items-center h-full">
@@ -65,14 +81,27 @@ export function Login() {
             </div>
             <CardFooter className="flex-col gap-2 px-0">
               <div>
-                <a className="text-sm underline-offset-4 hover:underline">
-                  Esqueceu sua senha?
-                </a>
+                <Button
+                  variant="link"
+                  type="button"
+                  onClick={onSwitchToForgotPassword}
+                >
+                  Esqueci minha senha
+                </Button>
               </div>
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+                onClick={() => router.push("/principal")}
+              >
                 Entrar
               </Button>
-              <Button variant="secondary" className="w-full">
+              <Button
+                variant="secondary"
+                className="w-full"
+                type="button"
+                onClick={onSwitchToRegister}
+              >
                 Cadastre-se
               </Button>
             </CardFooter>

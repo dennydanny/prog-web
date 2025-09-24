@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,8 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
+interface CadastroProps {
+  onSwitchToLogin: () => void;
+}
 
-export default function Cadastro() {
+export default function Cadastro({ onSwitchToLogin }: CadastroProps) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
@@ -34,7 +36,7 @@ export default function Cadastro() {
     <div className="flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Cadastro</CardTitle>
+          <CardTitle className="text-2xl">Cadastro</CardTitle>
           <CardDescription>
             Insira seu email e senha para criar sua conta.
           </CardDescription>
@@ -69,9 +71,18 @@ export default function Cadastro() {
             )}
 
             <CardFooter className="flex-col gap-2 px-0">
-              <Button type="submit" className="w-full">
-                Criar conta
-              </Button>
+              <div className="flex flex-col w-full gap-4">
+                <Button
+                  variant="secondary"
+                  type="button"
+                  onClick={onSwitchToLogin}
+                >
+                  Já tenho conta
+                </Button>
+                <Button type="submit">
+                  Criar conta
+                </Button>
+              </div>
             </CardFooter>
           </form>
         </CardContent>
