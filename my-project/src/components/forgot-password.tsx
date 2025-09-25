@@ -14,13 +14,20 @@ interface ForgotPasswordProps {
   onSwitchToLogin: () => void;
 }
 
-export default function ForgotPassword({ onSwitchToLogin }: ForgotPasswordProps) {
+export default function ForgotPassword({
+  onSwitchToLogin,
+}: ForgotPasswordProps) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
 
     if (password !== confirm) {
       setError("As senhas não coincidem.");
@@ -29,6 +36,7 @@ export default function ForgotPassword({ onSwitchToLogin }: ForgotPasswordProps)
 
     setError("");
     alert("Senha redefinida com sucesso!");
+  
   };
 
   return (

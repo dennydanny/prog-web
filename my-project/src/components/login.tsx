@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,31 +12,45 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { PasswordInput } from "./password-input";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface LoginProps {
   onSwitchToRegister: () => void;
   onSwitchToForgotPassword: () => void;
 }
 
-export function Login({ onSwitchToRegister, onSwitchToForgotPassword }: LoginProps) {
+export function Login({
+  onSwitchToRegister,
+  onSwitchToForgotPassword,
+}: LoginProps) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
+
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    
     if (!email || !password) {
-      alert("Preencha email e senha!");
+      setError("Preencha email e senha!");
       return;
     }
 
-   
+    if (!validateEmail(email)) {
+      setError("Digite um e-mail válido.");
+      return;
+    }
+
+    setError("");
+
+    
     router.push("/principal");
   };
-
 
   return (
     <div className="flex justify-center items-center h-full">
@@ -79,6 +92,11 @@ export function Login({ onSwitchToRegister, onSwitchToForgotPassword }: LoginPro
                 required
               />
             </div>
+
+            {error && (
+              <p className="text-sm text-red-500 font-medium">{error}</p>
+            )}
+
             <CardFooter className="flex-col gap-2 px-0">
               <div>
                 <Button
@@ -89,11 +107,7 @@ export function Login({ onSwitchToRegister, onSwitchToForgotPassword }: LoginPro
                   Esqueci minha senha
                 </Button>
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                onClick={() => router.push("/principal")}
-              >
+              <Button type="submit" className="w-full">
                 Entrar
               </Button>
               <Button

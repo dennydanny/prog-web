@@ -11,17 +11,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
+
 interface CadastroProps {
   onSwitchToLogin: () => void;
 }
 
 export default function Cadastro({ onSwitchToLogin }: CadastroProps) {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
 
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setError("Digite um e-mail válido.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
 
     if (password !== confirm) {
       setError("As senhas não coincidem.");
@@ -49,6 +66,8 @@ export default function Cadastro({ onSwitchToLogin }: CadastroProps) {
                 id="email"
                 type="email"
                 placeholder="seuemail@exemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -79,9 +98,7 @@ export default function Cadastro({ onSwitchToLogin }: CadastroProps) {
                 >
                   Já tenho conta
                 </Button>
-                <Button type="submit">
-                  Criar conta
-                </Button>
+                <Button type="submit">Criar conta</Button>
               </div>
             </CardFooter>
           </form>
